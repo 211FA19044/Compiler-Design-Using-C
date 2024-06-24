@@ -1,0 +1,22 @@
+%option noyywrap 
+%{
+#include <stdio.h>
+#include <stdlib.h>
+%}
+DIGIT [0-9]
+LETTER [a-zA-Z]  
+IDENTIFIER ({LETTER}({LETTER}|{DIGIT})*)
+%%
+" "|\t|\r     {}
+\n            { printf("NEWLINE\n"); }
+"if"      { printf("IF %s\n", yytext); }
+"else"    { printf("ELSE %s\n", yytext); }
+"int"     { printf("INT %s\n", yytext); }
+{IDENTIFIER} { printf("IDENTIFIER %s\n", yytext); }
+{DIGIT}+    { printf("NUMBER %s\n", yytext); }
+.           { printf("INVALID TOKEN %s\n", yytext); exit(1); }
+%%
+int main(int argc, char **argv) {
+    yylex();
+    return 0;
+}
